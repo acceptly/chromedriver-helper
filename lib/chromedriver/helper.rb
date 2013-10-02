@@ -6,7 +6,7 @@ require 'rbconfig'
 
 module Chromedriver
   class Helper
-    DOWNLOAD_URL = "http://code.google.com/p/chromedriver/downloads/list"
+    DOWNLOAD_URL = "https://code.google.com/p/chromedriver/downloads/list?can=1&q="
 
     def run *args
       download
