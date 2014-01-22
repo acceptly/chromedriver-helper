@@ -1,16 +1,21 @@
 require "chromedriver/helper/version"
-require "chromedriver/helper/google_code_parser"
 require 'fileutils'
 require 'open-uri'
 require 'rbconfig'
 
 module Chromedriver
   class Helper
-    DOWNLOAD_URL = "https://code.google.com/p/chromedriver/downloads/list?can=1&q="
+    def download_url
+      "http://chromedriver.storage.googleapis.com/#{latest_release}/chromedriver_#{platform}.zip"
+    end
 
     def run *args
       download
       exec binary_path, *args
+    end
+
+    def latest_release
+      @latest_release ||= open('http://chromedriver.storage.googleapis.com/LATEST_RELEASE').read
     end
 
     def download hit_network=false
@@ -29,13 +34,6 @@ module Chromedriver
 
     def update
       download true
-    end
-
-    def download_url
-      downloads = GoogleCodeParser.new(open(DOWNLOAD_URL)).downloads
-      url = downloads.grep(/chromedriver_#{platform}.*.zip/).first
-      url = "http:#{url}" if url !~ /^http/
-      url
     end
 
     def binary_path
@@ -59,8 +57,9 @@ module Chromedriver
       case cfg['host_os']
       when /linux/ then
         cfg['host_cpu'] =~ /x86_64|amd64/ ? "linux64" : "linux32"
-      when /darwin/ then "mac"
+      when /darwin/ then "mac32"
       else "win"
+        "win32"
       end
     end
   end

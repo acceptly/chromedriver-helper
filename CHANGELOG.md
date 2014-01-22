@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+0.0.6 - 21 Jan 2014
+----------
+
+* Corrected download location
+
+
 0.0.5 - 15 Aug 2012
 ----------
 
